@@ -54,3 +54,8 @@ temp
 /.windsurf
 /.agents
 /.claude
+/.superpowers
+/variants
+
+# CocoIndex Code (ccc)
+/.cocoindex_code/

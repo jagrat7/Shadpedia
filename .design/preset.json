@@ -1,0 +1,31 @@
+{
+  "preset_code": "base-lyra",
+  "preset_name": "Base Lyra",
+  "preset_url": "https://ui.shadcn.com/create",
+  "why_this_preset": "Base Lyra provides a neutral foundation. All colors overridden to pure white + Wikipedia blue. Typography overridden to Linux Libertine + system sans.",
+  "base": "base",
+  "style": "base-lyra",
+  "icon_library": "lucide",
+  "extra_icon_package": null,
+  "components_to_install": ["button", "card", "input", "badge", "separator", "tabs", "command", "dialog", "scroll-area", "table", "breadcrumb"],
+  "overrides_needed": {
+    "primary": "oklch(0.44 0.16 260)",
+    "primary_foreground": "oklch(1 0 0)",
+    "secondary": "oklch(0.96 0.003 240)",
+    "secondary_foreground": "oklch(0.18 0.005 250)",
+    "accent": "oklch(0.44 0.16 260)",
+    "accent_foreground": "oklch(1 0 0)",
+    "background": "oklch(1 0 0)",
+    "foreground": "oklch(0.18 0.005 250)",
+    "card": "oklch(0.97 0.003 240)",
+    "card_foreground": "oklch(0.18 0.005 250)",
+    "muted": "oklch(0.96 0.003 240)",
+    "muted_foreground": "oklch(0.45 0.01 250)",
+    "border": "oklch(0.72 0.01 250)",
+    "ring": "oklch(0.44 0.16 260)",
+    "radius": "0.125rem",
+    "font_sans": "Linux Libertine, Georgia, serif",
+    "font_body": "-apple-system, Segoe UI, Helvetica Neue, sans-serif",
+    "font_mono": "monospace"
+  }
+}

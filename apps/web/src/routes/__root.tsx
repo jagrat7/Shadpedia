@@ -1,11 +1,11 @@
-import { Toaster } from "@my-better-t-app/ui/components/sonner";
-import { HeadContent, Outlet, createRootRouteWithContext } from "@tanstack/react-router";
-import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
+import { Toaster } from "@my-better-t-app/ui/components/sonner"
+import { HeadContent, Outlet, createRootRouteWithContext } from "@tanstack/react-router"
+import { TanStackRouterDevtools } from "@tanstack/react-router-devtools"
 
-import Header from "@/components/header";
-import { ThemeProvider } from "@/components/theme-provider";
+import Header from "@/components/header"
+import { ThemeProvider } from "@/components/theme-provider"
 
-import "../index.css";
+import "../index.css"
 
 export interface RouterAppContext {}
 
@@ -14,11 +14,11 @@ export const Route = createRootRouteWithContext<RouterAppContext>()({
   head: () => ({
     meta: [
       {
-        title: "my-better-t-app",
+        title: "Shadpedia — The Free Component Encyclopedia",
       },
       {
         name: "description",
-        content: "my-better-t-app is a web application",
+        content: "Shadpedia indexes shadcn/ui components — a Wikipedia-like encyclopedia of UI components.",
       },
     ],
     links: [
@@ -28,7 +28,7 @@ export const Route = createRootRouteWithContext<RouterAppContext>()({
       },
     ],
   }),
-});
+})
 
 function RootComponent() {
   return (
@@ -36,7 +36,7 @@ function RootComponent() {
       <HeadContent />
       <ThemeProvider
         attribute="class"
-        defaultTheme="dark"
+        defaultTheme="light"
         disableTransitionOnChange
         storageKey="vite-ui-theme"
       >
@@ -48,5 +48,5 @@ function RootComponent() {
       </ThemeProvider>
       <TanStackRouterDevtools position="bottom-left" />
     </>
-  );
+  )
 }
