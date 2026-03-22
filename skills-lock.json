@@ -1,6 +1,11 @@
 {
   "version": 1,
   "skills": {
+    "frontend-variants": {
+      "source": "jagrat7/dev-automations",
+      "sourceType": "github",
+      "computedHash": "a0afdb9dc17c671868e2409f1cfd6df1f91bc91805c8d86e410d89f677602584"
+    },
     "shadcn": {
       "source": "shadcn/ui",
       "sourceType": "github",
