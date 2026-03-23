@@ -1,0 +1,134 @@
+{
+  "overview": {
+    "style_name": "Paper Catalog × Wiki Reference",
+    "creative_north_star": "A Wikipedia-meets-print-catalog encyclopedia — authoritative serif typography, hard editorial borders, and card-based discovery with a scholarly tone",
+    "description": "Merges the informational density and blue-link conventions of a wiki reference with the bold borders, hard shadows, and card grids of a paper catalog. Headings use Libre Bodoni serif with underline borders. Navigation is uppercase tracked. Components are presented in bordered cards with hard-shadow hover effects.",
+    "best_for": ["component encyclopedias", "documentation sites", "reference libraries", "catalogs"],
+    "worktree": null
+  },
+  "colors": {
+    "palette": {
+      "primary": "oklch(0.44 0.16 260)",
+      "primary_container": "oklch(0.96 0.003 240)",
+      "secondary": "oklch(0.96 0.003 240)",
+      "tertiary": "oklch(0.44 0.16 260)",
+      "cta": "oklch(0.44 0.16 260)",
+      "background": "oklch(1 0 0)",
+      "text": "oklch(0.18 0.005 250)",
+      "notes": "Wikipedia blue primary. Warm near-black foreground with a slight blue tint (hue 250). All neutrals carry a faint blue cast for cohesion."
+    },
+    "surface_hierarchy": {
+      "surface": "oklch(1 0 0)",
+      "surface_container_low": "oklch(0.96 0.003 240)",
+      "surface_container": "oklch(0.97 0.003 240)",
+      "surface_container_high": "oklch(1 0 0)",
+      "surface_container_highest": "oklch(0.96 0.003 240)",
+      "surface_bright": "oklch(1 0 0)"
+    },
+    "dark_mode": {
+      "background": "oklch(0.16 0.005 250)",
+      "foreground": "oklch(0.93 0.005 240)",
+      "primary": "oklch(0.65 0.18 260)",
+      "card": "oklch(0.20 0.008 250)",
+      "muted": "oklch(0.24 0.008 250)",
+      "border": "oklch(1 0 0 / 12%)"
+    },
+    "rules": [
+      "Primary blue used for links, accents, active states, and ring focus",
+      "Foreground is warm near-black, never pure black",
+      "Card and muted surfaces carry a faint blue-gray tint",
+      "Borders are visible (0.72 lightness) — not subtle",
+      "Hard shadows use near-black oklch(0.13 0 0) for print-catalog effect"
+    ],
+    "signature_effect": "hard-shadow: 4px 4px 0 oklch(0.13 0 0) — applied on hover for cards, buttons, and focus for inputs"
+  },
+  "typography": {
+    "display": {
+      "font": "Libre Bodoni",
+      "weight": "700",
+      "usage": "All headings (h1–h6), hero titles, card titles, sidebar headings. Always bold with border-bottom underline."
+    },
+    "body": {
+      "font": "Public Sans",
+      "weight": "400–600",
+      "usage": "Body text, descriptions, labels, navigation. Clean geometric sans for readability."
+    },
+    "mono": {
+      "font": "monospace (system default)",
+      "usage": "Code blocks, install commands, prop types"
+    },
+    "css_import": "https://fonts.googleapis.com/css2?family=Libre+Bodoni:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+  },
+  "elevation": {
+    "approach": "Flat with hard shadows — no blur, no soft elevation. Depth created through 2px borders and offset box-shadows.",
+    "ambient_shadow": "none",
+    "ghost_border": "2px solid foreground for cards, tabs, inputs; 1px solid border for table cells and heading underlines",
+    "glassmorphism": "none"
+  },
+  "components": {
+    "buttons": {
+      "primary": "bg-foreground text-background border-2 border-foreground, uppercase tracking-widest text-sm font-semibold",
+      "hover": "hover:hard-shadow transition-all",
+      "tertiary": "text-primary hover:underline (wiki-style link)"
+    },
+    "cards": {
+      "surface": "bg-card border-2 border-foreground",
+      "separator": "border-foreground/20",
+      "active_state": "hover:hard-shadow transition-all"
+    },
+    "inputs": {
+      "shape": "border-2 border-foreground, no border-radius (0.125rem base)",
+      "focus": "focus:hard-shadow focus:outline-none",
+      "labels": "text-xs font-semibold uppercase tracking-widest text-muted-foreground"
+    },
+    "chips": {
+      "style": "border-2 border-foreground px-3 py-1, uppercase tracking-widest text-xs font-semibold. Active: bg-foreground text-background. Inactive: bg-background text-foreground."
+    },
+    "tabs": {
+      "style": "border-b-2 border-foreground. Active tab: bg-foreground text-background. Inactive: text-muted-foreground hover:text-foreground. Content panel: border-2 border-t-0 border-foreground."
+    },
+    "tables": {
+      "style": "Wikipedia-like: collapsed borders, 1px solid border, alternating row backgrounds using color-mix(in oklch, muted, transparent 50%). Header row: bg-muted font-weight-600."
+    }
+  },
+  "layout": {
+    "pattern": "max-w-5xl centered, responsive grid",
+    "sections": [
+      "Hero with centered serif heading + search bar",
+      "Category chips row (centered, flex-wrap)",
+      "Two-column: card grid + sidebar infobox (1fr + 280px)",
+      "Three-column card grid on browse (sm:2, lg:3)",
+      "Two-column detail: main content with tabs + metadata sidebar (1fr + 300px)"
+    ],
+    "cta_placement": "Inside metadata sidebar as full-width button; inline in cards as install command preview",
+    "philosophy": "Information-dense but scannable. Serif headings provide editorial authority. Hard borders and shadows give physical weight. Uppercase labels create clear hierarchy."
+  },
+  "base_styles": {
+    "headings": "font-serif font-bold, border-bottom: 1px solid var(--border), padding-bottom: 0.25em, margin-bottom: 0.5em",
+    "links": "color: var(--primary), text-decoration: none, hover: underline",
+    "nav_links": "text-sm font-semibold uppercase tracking-widest text-foreground hover:text-accent",
+    "tag_pills": "border border-foreground px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider",
+    "source_labels": "text-xs font-medium uppercase tracking-widest text-accent",
+    "metadata_labels": "text-xs font-semibold uppercase tracking-widest text-muted-foreground"
+  },
+  "dos": [
+    "Use 2px borders on cards, tabs, inputs, and header",
+    "Apply hard-shadow on hover/focus for interactive elements",
+    "Use serif (Libre Bodoni) for all headings",
+    "Use uppercase tracking-widest for labels, nav, chips, and metadata keys",
+    "Keep heading underline borders (1px solid border)",
+    "Use Wikipedia blue for links and primary actions",
+    "Use OKLCH color format exclusively",
+    "Keep tight border-radius (0.125rem)",
+    "Use dt/dd pairs for metadata, not tables"
+  ],
+  "donts": [
+    "Don't use soft shadows or blur-based elevation",
+    "Don't use rounded corners larger than 0.25rem",
+    "Don't use sans-serif for headings",
+    "Don't use hex colors — always OKLCH",
+    "Don't use subtle/invisible borders — borders should be prominent",
+    "Don't use gradient backgrounds",
+    "Don't remove heading underlines — they're a core wiki identity element"
+  ]
+}
