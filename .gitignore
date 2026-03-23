@@ -50,12 +50,7 @@ coverage
 tmp
 temp
 
-
-/.windsurf
-/.agents
-/.claude
-/.superpowers
-/variants
-
-# CocoIndex Code (ccc)
-/.cocoindex_code/
+.agent
+.agents
+.claude
+.windsurf

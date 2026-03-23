@@ -10,15 +10,14 @@ A site that collects and condenses amazing shadcn component websites, providing 
 - [Eldora UI](https://www.eldoraui.site/)
 
 
-
 ## Features
 
 - **TypeScript** - For type safety and improved developer experience
-- **TanStack Router** - File-based routing with full type safety
+- **Next.js** - Full-stack React framework
 - **TailwindCSS** - Utility-first CSS for rapid UI development
 - **Shared UI package** - shadcn/ui primitives live in `packages/ui`
+- **Oxlint** - Oxlint + Oxfmt (linting & formatting)
 - **PWA** - Progressive Web App support
-- **Turborepo** - Optimized monorepo build system
 
 ## Getting Started
 
@@ -34,7 +33,7 @@ Then, run the development server:
 bun run dev
 ```
 
-Open [http://localhost:3001](http://localhost:3001) in your browser to see the web application.
+Open [http://localhost:3001](http://localhost:3001) in your browser to see the fullstack application.
 
 ## UI Customization
 
@@ -62,12 +61,16 @@ import { Button } from "@my-better-t-app/ui/components/button";
 
 If you want to add app-specific blocks instead of shared primitives, run the shadcn CLI from `apps/web`.
 
+## Git Hooks and Formatting
+
+- Format and lint fix: `bun run check`
+
 ## Project Structure
 
 ```
 my-better-t-app/
 ├── apps/
-│   ├── web/         # Frontend application (React + TanStack Router)
+│   └── web/         # Fullstack application (Next.js)
 ├── packages/
 │   ├── ui/          # Shared shadcn/ui components and styles
 ```
@@ -78,4 +81,5 @@ my-better-t-app/
 - `bun run build`: Build all applications
 - `bun run dev:web`: Start only the web application
 - `bun run check-types`: Check TypeScript types across all apps
+- `bun run check`: Run Oxlint and Oxfmt
 - `cd apps/web && bun run generate-pwa-assets`: Generate PWA assets

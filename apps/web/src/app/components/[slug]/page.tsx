@@ -1,10 +1,9 @@
-import { Link, createFileRoute } from "@tanstack/react-router"
+"use client"
+
+import Link from "next/link"
+import { useParams } from "next/navigation"
 import { ArrowLeft, Copy, Check } from "lucide-react"
 import { useState } from "react"
-
-export const Route = createFileRoute("/components/$slug")({
-  component: ComponentDetailComponent,
-})
 
 const COMPONENTS = [
   { name: "Button", slug: "button", source: "shadcn/ui", tags: ["form", "action"], description: "Displays a button or a component that looks like a button.", install: "npx shadcn@latest add button", version: "1.0.0" },
@@ -31,8 +30,9 @@ const MOCK_PROPS = [
 
 type Tab = "preview" | "code" | "props"
 
-function ComponentDetailComponent() {
-  const { slug } = Route.useParams()
+export default function ComponentDetailPage() {
+  const params = useParams<{ slug: string }>()
+  const slug = params.slug
   const [activeTab, setActiveTab] = useState<Tab>("preview")
   const [copied, setCopied] = useState(false)
 
@@ -46,8 +46,8 @@ function ComponentDetailComponent() {
           The component &ldquo;{slug}&rdquo; could not be found in Shadpedia.
         </p>
         <Link
-          to="/browse"
-          className="mt-8 inline-block border-2 border-foreground bg-foreground px-6 py-2 text-sm font-semibold uppercase tracking-widest text-background transition-all hover:hard-shadow"
+          href="/browse"
+          className="mt-8 inline-block border-2 border-foreground bg-foreground px-6 py-2 text-sm font-semibold uppercase tracking-widest text-background transition-all hover:hard-shadow no-underline"
         >
           Back to Browse
         </Link>
@@ -61,7 +61,7 @@ function ComponentDetailComponent() {
     setTimeout(() => setCopied(false), 2000)
   }
 
-  const tabs: { key: Tab, label: string }[] = [
+  const tabs: { key: Tab; label: string }[] = [
     { key: "preview", label: "Preview" },
     { key: "code", label: "Code" },
     { key: "props", label: "Props" },
@@ -75,8 +75,8 @@ function ComponentDetailComponent() {
         {/* Breadcrumb + Back */}
         <nav className="mb-6 flex items-center gap-4">
           <Link
-            to="/browse"
-            className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-widest text-foreground transition-colors hover:text-accent"
+            href="/browse"
+            className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-widest text-foreground transition-colors hover:text-accent no-underline"
           >
             <ArrowLeft className="h-4 w-4" />
             Browse

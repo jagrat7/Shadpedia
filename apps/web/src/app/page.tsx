@@ -1,10 +1,8 @@
-import { Link, createFileRoute } from "@tanstack/react-router"
+"use client"
+
+import Link from "next/link"
 import { Search } from "lucide-react"
 import { useState } from "react"
-
-export const Route = createFileRoute("/")({
-  component: HomeComponent,
-})
 
 const FEATURED_COMPONENTS = [
   { name: "Button", slug: "button", source: "shadcn/ui", tags: ["form", "action"], description: "Displays a button or a component that looks like a button." },
@@ -33,7 +31,7 @@ const RECENT_ADDITIONS = [
   { name: "Shimmer Button", slug: "shimmer-button", date: "17 March 2026" },
 ]
 
-function HomeComponent() {
+export default function HomePage() {
   const [searchQuery, setSearchQuery] = useState("")
 
   return (
@@ -68,8 +66,8 @@ function HomeComponent() {
           {CATEGORIES.map((cat) => (
             <Link
               key={cat}
-              to="/browse"
-              className="border-2 border-foreground bg-foreground px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-background transition-all hover:bg-background hover:text-foreground hover:hard-shadow cursor-pointer"
+              href="/browse"
+              className="border-2 border-foreground bg-foreground px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-background transition-all hover:bg-background hover:text-foreground hover:hard-shadow cursor-pointer no-underline"
             >
               {cat}
             </Link>
@@ -89,9 +87,8 @@ function HomeComponent() {
               {FEATURED_COMPONENTS.map((comp) => (
                 <Link
                   key={comp.slug}
-                  to="/components/$slug"
-                  params={{ slug: comp.slug }}
-                  className="group border-2 border-foreground bg-card p-5 transition-all hover:hard-shadow"
+                  href={`/components/${comp.slug}`}
+                  className="group border-2 border-foreground bg-card p-5 transition-all hover:hard-shadow no-underline"
                 >
                   <div className="mb-1 text-xs font-medium uppercase tracking-widest text-accent">
                     {comp.source}
@@ -163,8 +160,7 @@ function HomeComponent() {
           {RECENT_ADDITIONS.map((item) => (
             <li key={item.slug} className="flex items-baseline gap-2 text-sm">
               <Link
-                to="/components/$slug"
-                params={{ slug: item.slug }}
+                href={`/components/${item.slug}`}
                 className="font-medium text-primary hover:underline cursor-pointer"
               >
                 {item.name}

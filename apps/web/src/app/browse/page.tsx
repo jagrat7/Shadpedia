@@ -1,9 +1,7 @@
-import { Link, createFileRoute } from "@tanstack/react-router"
-import { useState } from "react"
+"use client"
 
-export const Route = createFileRoute("/browse")({
-  component: BrowseComponent,
-})
+import Link from "next/link"
+import { useState } from "react"
 
 const COMPONENTS = [
   { name: "Button", slug: "button", source: "shadcn/ui", tags: ["form", "action"], description: "Displays a button or a component that looks like a button.", install: "npx shadcn@latest add button" },
@@ -22,7 +20,7 @@ const COMPONENTS = [
 
 const ALL_TAGS = [...new Set(COMPONENTS.flatMap((c) => c.tags))].sort()
 
-function BrowseComponent() {
+export default function BrowsePage() {
   const [activeTag, setActiveTag] = useState<string | null>(null)
 
   const filtered = activeTag
@@ -34,7 +32,7 @@ function BrowseComponent() {
       <section className="mx-auto max-w-5xl px-4 pb-16 pt-10 md:px-6">
         {/* Breadcrumb */}
         <nav className="text-sm text-muted-foreground mb-6">
-          <Link to="/" className="text-primary hover:underline">Shadpedia</Link>
+          <Link href="/" className="text-primary hover:underline">Shadpedia</Link>
           <span className="mx-1">&gt;</span>
           <span className="text-foreground">Browse</span>
         </nav>
@@ -80,9 +78,8 @@ function BrowseComponent() {
           {filtered.map((comp) => (
             <Link
               key={comp.slug}
-              to="/components/$slug"
-              params={{ slug: comp.slug }}
-              className="group flex flex-col border-2 border-foreground bg-card p-6 transition-all hover:hard-shadow"
+              href={`/components/${comp.slug}`}
+              className="group flex flex-col border-2 border-foreground bg-card p-6 transition-all hover:hard-shadow no-underline"
             >
               <div className="mb-1 text-xs font-medium uppercase tracking-widest text-accent">
                 {comp.source}
