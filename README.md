@@ -65,14 +65,66 @@ If you want to add app-specific blocks instead of shared primitives, run the sha
 
 - Format and lint fix: `bun run check`
 
+## Architecture
+
+```mermaid
+graph TD
+    Browser["Browser"]
+
+    subgraph Vercel
+        Next["Next.js (apps/web)<br/>UI, SSR, Auth"]
+    end
+
+    subgraph Railway
+        FastAPI["FastAPI (apps/ai)<br/>API, DB, Search, LLMs"]
+        Postgres["Postgres + pgvector"]
+    end
+
+    subgraph Inngest Cloud
+        Inngest["Inngest<br/>Background Workflows"]
+    end
+
+    Browser -->|requests| Next
+    Next -->|"/api/*" rewrite| FastAPI
+    FastAPI -->|SQLModel| Postgres
+    FastAPI -->|events| Inngest
+    Inngest -->|triggers functions| FastAPI
+
+    style Next fill:#0070f3,color:#fff
+    style FastAPI fill:#009688,color:#fff
+    style Postgres fill:#336791,color:#fff
+    style Inngest fill:#6366f1,color:#fff
+```
+
+### Data Flow
+
+```mermaid
+graph LR
+    subgraph Search["User Search (latency-sensitive)"]
+        direction LR
+        Q["Query"] --> NS["Next.js"] --> FA["FastAPI"] --> E["Embed query"] --> PG["pgvector similarity"] --> R["Results"]
+    end
+
+    subgraph Ingest["Background Indexing (async)"]
+        direction LR
+        SA["site/added event"] --> CR["Crawl site"] --> CF["component/found events"] --> EM["Generate embeddings"] --> ST["Store in pgvector"]
+    end
+
+    style Search fill:#f0fdf4,stroke:#16a34a
+    style Ingest fill:#fef3c7,stroke:#d97706
+```
+
 ## Project Structure
 
 ```
-my-better-t-app/
+shadpedia/
 ├── apps/
-│   └── web/         # Fullstack application (Next.js)
+│   ├── web/         # Next.js — UI, SSR, auth (Vercel)
+│   └── ai/          # FastAPI — API, DB, search, LLMs (Railway)
 ├── packages/
 │   ├── ui/          # Shared shadcn/ui components and styles
+│   ├── config/      # Shared TypeScript config
+│   └── env/         # Shared env validation
 ```
 
 ## Available Scripts

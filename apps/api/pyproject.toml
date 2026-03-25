@@ -1,0 +1,19 @@
+[project]
+name = "shadpedia-api"
+version = "0.1.0"
+description = "Shadpedia API — search, AI, and DB layer"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "alembic>=1.18.4",
+    "asyncpg>=0.31.0",
+    "fastapi[standard]>=0.135.2",
+    "inngest>=0.5.18",
+    "pgvector>=0.4.2",
+    "sqlmodel>=0.0.37",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.12.4",
+]
