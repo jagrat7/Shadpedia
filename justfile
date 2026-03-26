@@ -2,7 +2,7 @@ set dotenv-load
 
 # Run everything (web + api + inngest)
 dev:
-    just web & just api & just inngest & wait
+    bunx concurrently -n web,api,inngest -c blue,green,magenta "just web" "just api" "just inngest"
 
 # Run Next.js dev server
 web:
@@ -14,11 +14,11 @@ api:
 
 # Run Inngest dev server
 inngest:
-    npx inngest-cli@latest dev
+    bun inngest-cli dev -u http://localhost:8000/api/inngest
 
 # Run web + api (no inngest)
 dev-app:
-    just web & just api & wait
+    bunx concurrently -n web,api -c blue,green "just web" "just api"
 
 # Format all
 fmt:
