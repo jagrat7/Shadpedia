@@ -10,6 +10,7 @@
   "dependencies": {
     "@my-better-t-app/env": "workspace:*",
     "@my-better-t-app/ui": "workspace:*",
+    "@tanstack/react-query": "^5.95.2",
     "babel-plugin-react-compiler": "^1.0.0",
     "dotenv": "catalog:",
     "lucide-react": "catalog:",
