@@ -37,6 +37,14 @@ migrate:
 migration name:
     cd apps/api && uv run alembic revision --autogenerate -m "{{name}}"
 
+# Start Postgres
+db:
+    docker compose up -d
+
+# Stop Postgres
+db-stop:
+    docker compose down
+
 # Install all dependencies
 install:
     bun install

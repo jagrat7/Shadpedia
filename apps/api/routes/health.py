@@ -1,8 +1,8 @@
 import fastapi
 
-router = fastapi.APIRouter()
+router = fastapi.APIRouter(prefix="/health", tags=["health"])
 
 
-@router.get("/health")
-async def health_check():
+@router.get("/")
+async def health_check() -> dict[str, str]:
     return {"status": "ok"}

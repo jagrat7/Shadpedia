@@ -13,6 +13,9 @@ dependencies = [
     "sqlmodel>=0.0.37",
 ]
 
+[tool.fastapi]
+entrypoint = "main:app"
+
 [dependency-groups]
 dev = [
     "ruff>=0.12.4",
