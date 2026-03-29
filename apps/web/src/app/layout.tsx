@@ -2,7 +2,8 @@ import type { Metadata } from "next"
 
 import "../index.css"
 import Header from "@/components/header"
-import Providers from "@/context/providers"
+import ClientProviders from "@/context/providers"
+import ServerProviders from "@/context/server-providers"
 
 export const metadata: Metadata = {
   title: "Shadpedia — The Free Component Encyclopedia",
@@ -26,12 +27,14 @@ export default function RootLayout({
         <link href={GOOGLE_FONTS_URL} rel="stylesheet" />
       </head>
       <body className="antialiased">
-        <Providers>
-          <div className="grid grid-rows-[auto_1fr] h-svh">
-            <Header />
-            {children}
-          </div>
-        </Providers>
+        <ServerProviders>
+          <ClientProviders>
+            <div className="grid grid-rows-[auto_1fr] h-svh">
+              <Header />
+              {children}
+            </div>
+          </ClientProviders>
+        </ServerProviders>
       </body>
     </html>
   )

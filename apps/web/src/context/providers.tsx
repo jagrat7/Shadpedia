@@ -6,7 +6,7 @@ import { Toaster } from "@my-better-t-app/ui/components/sonner"
 
 import { ThemeProvider } from "./theme-provider"
 
-export default function Providers({ children }: { children: React.ReactNode }) {
+export default function ClientProviders({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(() => new QueryClient())
 
   return (

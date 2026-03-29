@@ -8,6 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@clerk/nextjs": "^7.0.7",
     "@my-better-t-app/env": "workspace:*",
     "@my-better-t-app/ui": "workspace:*",
     "@tanstack/react-query": "^5.95.2",
