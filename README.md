@@ -98,6 +98,12 @@ graph TD
 
 ### Data Flow
 
+The app processes data through two distinct flows:
+
+**Search (latency-sensitive)**: User query → Next.js → FastAPI → query embedding → pgvector similarity search → results returned instantly
+
+**Ingest (background)**: `site/added` event → crawl site  → emit `component/found` events → generate descriptions using batch LLM calls → generate embeddings → store in pgvector for search
+
 ```mermaid
 graph LR
     subgraph Search["User Search (latency-sensitive)"]
