@@ -67,53 +67,72 @@ If you want to add app-specific blocks instead of shared primitives, run the sha
 
 ## Architecture
 
+Full TypeScript stack. No separate backend service — Next.js server actions + Vercel Workflows handle all logic. The crawler (Stagehand) is self-hosted on a home PC and exposed to Vercel via a Cloudflare Tunnel.
+
 ```mermaid
 graph TD
     Browser["Browser"]
 
     subgraph Vercel
-        Next["Next.js (apps/web)<br/>UI, SSR, Auth"]
+        Next["Next.js (apps/web)<br/>UI, SSR, Admin, Server Actions"]
+        Workflow["Vercel Workflows<br/>Durable ingest pipeline"]
+        Gateway["Vercel AI Gateway<br/>LLM + embedding routing"]
     end
 
-    subgraph Railway
-        FastAPI["FastAPI (apps/ai)<br/>API, DB, Search, LLMs"]
-        Postgres["Postgres + pgvector"]
+    subgraph Clerk
+        Auth["Clerk<br/>Auth"]
     end
 
-    subgraph Inngest Cloud
-        Inngest["Inngest<br/>Background Workflows"]
+    subgraph Neon
+        Postgres["Postgres + pgvector<br/>(Drizzle ORM)"]
     end
+
+    subgraph Home["Home PC"]
+        Stagehand["Stagehand<br/>Chromium + LLM browser agent"]
+    end
+
+    Tunnel["Cloudflare Tunnel"]
+    Google["Google Gemini<br/>Flash + Embedding"]
 
     Browser -->|requests| Next
-    Next -->|"/api/*" rewrite| FastAPI
-    FastAPI -->|SQLModel| Postgres
-    FastAPI -->|events| Inngest
-    Inngest -->|triggers functions| FastAPI
+    Browser -->|sign in| Auth
+    Next -->|Drizzle| Postgres
+    Next -->|trigger| Workflow
+    Workflow -->|HTTPS| Tunnel
+    Tunnel --> Stagehand
+    Workflow -->|describe + embed| Gateway
+    Workflow -->|Drizzle| Postgres
+    Next -->|embed query| Gateway
+    Gateway --> Google
 
     style Next fill:#0070f3,color:#fff
-    style FastAPI fill:#009688,color:#fff
+    style Workflow fill:#0070f3,color:#fff
+    style Gateway fill:#0070f3,color:#fff
     style Postgres fill:#336791,color:#fff
-    style Inngest fill:#6366f1,color:#fff
+    style Stagehand fill:#f59e0b,color:#fff
+    style Tunnel fill:#f38020,color:#fff
+    style Auth fill:#6c47ff,color:#fff
+    style Google fill:#4285f4,color:#fff
 ```
 
 ### Data Flow
 
-The app processes data through two distinct flows:
+Two distinct paths: a hot search path and a durable background ingest pipeline.
 
-**Search (latency-sensitive)**: User query → Next.js → FastAPI → query embedding → pgvector similarity search → results returned instantly
+**Search (latency-sensitive)**: User query → Next.js server action → AI Gateway (Gemini embedding) → pgvector ANN search over components → ranked results.
 
-**Ingest (background)**: `site/added` event → crawl site  → emit `component/found` events → generate descriptions using batch LLM calls → generate embeddings → store in pgvector for search
+**Ingest (durable background)**: Admin submits site in admin panel → Vercel Workflow starts → step 1 calls Stagehand on the home PC through the Cloudflare Tunnel to discover component URLs → one durable step per component fetches the component, generates a description (Gemini Flash) and an embedding (gemini-embedding-001), and upserts into Neon. Each step is independently retriable; if the PC is offline mid-crawl the workflow resumes when reachable.
 
 ```mermaid
 graph LR
     subgraph Search["User Search (latency-sensitive)"]
         direction LR
-        Q["Query"] --> NS["Next.js"] --> FA["FastAPI"] --> E["Embed query"] --> PG["pgvector similarity"] --> R["Results"]
+        Q["Query"] --> NS["Next.js"] --> EG["AI Gateway<br/>embed"] --> PG["pgvector ANN"] --> R["Results"]
     end
 
-    subgraph Ingest["Background Indexing (async)"]
+    subgraph Ingest["Background Indexing (durable workflow)"]
         direction LR
-        SA["site/added event"] --> CR["Crawl site"] --> CF["component/found events"] --> EM["Generate embeddings"] --> ST["Store in pgvector"]
+        A["Admin adds site"] --> W["Vercel Workflow"] --> SH["Stagehand<br/>(home PC, via tunnel)"] --> CL["Component list"] --> PS["Per-component step:<br/>describe + embed"] --> ST["Upsert pgvector"]
     end
 
     style Search fill:#f0fdf4,stroke:#16a34a
