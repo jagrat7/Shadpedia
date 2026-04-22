@@ -2,7 +2,8 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { Play, RotateCw, Check, X, Clock, ExternalLink } from "lucide-react"
+import { Play, RotateCw, Check, X, Clock } from "lucide-react"
+import { StagehandEmbed } from "./stagehand"
 
 type JobStatus = "idle" | "running" | "completed" | "failed"
 
@@ -168,6 +169,7 @@ export default function AdminPage() {
         <p className="mt-2 text-muted-foreground">
           Dispatch scraping jobs, review outputs, and finalize components.
         </p>
+        			<StagehandEmbed />
 
         {/* Dispatch Section */}
         <div className="mt-8 grid gap-6 md:grid-cols-[1fr_auto_auto]">
@@ -378,7 +380,7 @@ export default function AdminPage() {
             )}
           </div>
         )}
-
+        
         {/* Stats Sidebar */}
         <div className="mt-10 grid gap-4 sm:grid-cols-4">
           {[
