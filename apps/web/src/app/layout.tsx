@@ -1,9 +1,9 @@
 import type { Metadata } from "next"
 
 import "../index.css"
-import Header from "@/components/header"
-import ClientProviders from "@/context/providers"
-import ServerProviders from "@/context/server-providers"
+import Header from "@/app/_components/header"
+import ClientProviders from "@/app/_context/providers"
+import ServerProviders from "@/app/_context/server-providers"
 
 export const metadata: Metadata = {
   title: "Shadpedia — The Free Component Encyclopedia",
