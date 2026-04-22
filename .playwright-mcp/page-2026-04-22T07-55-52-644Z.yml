@@ -1,0 +1,223 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e5]:
+      - link [ref=e7] [cursor=pointer]:
+        - /url: /
+        - img [ref=e8]
+      - list [ref=e26]:
+        - listitem [ref=e27]:
+          - link "Installation" [ref=e28] [cursor=pointer]:
+            - /url: /docs/installation
+            - generic [ref=e29]: Installation
+        - listitem [ref=e30]:
+          - link "Introduction" [ref=e31] [cursor=pointer]:
+            - /url: /docs/introduction
+            - generic [ref=e32]: Introduction
+        - listitem [ref=e33]:
+          - button "Components" [ref=e34]:
+            - generic [ref=e35]: Components
+          - list [ref=e36]:
+            - listitem [ref=e37]:
+              - link "3D Book" [ref=e38] [cursor=pointer]:
+                - /url: /docs/components/3d-book
+                - generic [ref=e39]: 3D Book
+            - listitem [ref=e40]:
+              - link "Animated Collection" [ref=e41] [cursor=pointer]:
+                - /url: /docs/components/animated-collection
+                - generic [ref=e42]: Animated Collection
+            - listitem [ref=e43]:
+              - link "Bento Card" [ref=e44] [cursor=pointer]:
+                - /url: /docs/components/bento-card
+                - generic [ref=e45]: Bento Card
+            - listitem [ref=e46]:
+              - link "Bottom Menu" [ref=e47] [cursor=pointer]:
+                - /url: /docs/components/bottom-menu
+                - generic [ref=e48]: Bottom Menu
+            - listitem [ref=e49]:
+              - link "Bucket" [ref=e50] [cursor=pointer]:
+                - /url: /docs/components/bucket
+                - generic [ref=e51]: Bucket
+            - listitem [ref=e52]:
+              - link "Day Picker" [ref=e53] [cursor=pointer]:
+                - /url: /docs/components/day-picker
+                - generic [ref=e54]: Day Picker
+            - listitem [ref=e55]:
+              - link "Delete Button" [ref=e56] [cursor=pointer]:
+                - /url: /docs/components/delete-button
+                - generic [ref=e57]: Delete Button
+            - listitem [ref=e58]:
+              - link "Discover Button" [ref=e59] [cursor=pointer]:
+                - /url: /docs/components/discover-button
+                - generic [ref=e60]: Discover Button
+            - listitem [ref=e61]:
+              - link "Discrete Tabs" [ref=e62] [cursor=pointer]:
+                - /url: /docs/components/discrete-tab
+                - generic [ref=e63]: Discrete Tabs
+            - listitem [ref=e64]:
+              - link "Dynamic Toolbar" [ref=e65] [cursor=pointer]:
+                - /url: /docs/components/dynamic-toolbar
+                - generic [ref=e66]: Dynamic Toolbar
+            - listitem [ref=e67]:
+              - link "Empty Testimonial" [ref=e68] [cursor=pointer]:
+                - /url: /docs/components/empty-testimonial
+                - generic [ref=e69]: Empty Testimonial
+            - listitem [ref=e70]:
+              - link "Expandable Gallery" [ref=e71] [cursor=pointer]:
+                - /url: /docs/components/expandable-gallery
+                - generic [ref=e72]: Expandable Gallery
+            - listitem [ref=e73]:
+              - link "Feature Carousel" [ref=e74] [cursor=pointer]:
+                - /url: /docs/components/feature-carousel
+                - generic [ref=e75]: Feature Carousel
+            - listitem [ref=e76]:
+              - link "Fluid Expanding Grid" [ref=e77] [cursor=pointer]:
+                - /url: /docs/components/fluid-expanding-grid
+                - generic [ref=e78]: Fluid Expanding Grid
+            - listitem [ref=e79]:
+              - link "Folder Interaction" [ref=e80] [cursor=pointer]:
+                - /url: /docs/components/folder-interaction
+                - generic [ref=e81]: Folder Interaction
+            - listitem [ref=e82]:
+              - link "Inline Edit" [ref=e83] [cursor=pointer]:
+                - /url: /docs/components/inline-edit
+                - generic [ref=e84]: Inline Edit
+            - listitem [ref=e85]:
+              - link "Filter Interaction" [ref=e86] [cursor=pointer]:
+                - /url: /docs/components/list-item
+                - generic [ref=e87]: Filter Interaction
+            - listitem [ref=e88]:
+              - link "Magnified Bento" [ref=e89] [cursor=pointer]:
+                - /url: /docs/components/magnified-bento
+                - generic [ref=e90]: Magnified Bento
+            - listitem [ref=e91]:
+              - link "Morphing Input" [ref=e92] [cursor=pointer]:
+                - /url: /docs/components/morphing-input
+                - generic [ref=e93]: Morphing Input
+            - listitem [ref=e94]:
+              - link "Multi Step Form" [ref=e95] [cursor=pointer]:
+                - /url: /docs/components/multi-step-form
+                - generic [ref=e96]: Multi Step Form
+            - listitem [ref=e97]:
+              - link "Pricing Card" [ref=e98] [cursor=pointer]:
+                - /url: /docs/components/pricing-card
+                - generic [ref=e99]: Pricing Card
+            - listitem [ref=e100]:
+              - link "Shake Testimonial Card" [ref=e101] [cursor=pointer]:
+                - /url: /docs/components/shake-testimonial-card
+                - generic [ref=e102]: Shake Testimonial Card
+            - listitem [ref=e103]:
+              - link "Smooth Dropdown" [ref=e104] [cursor=pointer]:
+                - /url: /docs/components/smooth-dropdown
+                - generic [ref=e105]: Smooth Dropdown
+            - listitem [ref=e106]:
+              - link "Stacked List" [ref=e107] [cursor=pointer]:
+                - /url: /docs/components/stacked-list
+                - generic [ref=e108]: Stacked List
+            - listitem [ref=e109]:
+              - link "Status Button" [ref=e110] [cursor=pointer]:
+                - /url: /docs/components/status-button
+                - generic [ref=e111]: Status Button
+            - listitem [ref=e112]:
+              - link "Vertical Tabs" [ref=e113] [cursor=pointer]:
+                - /url: /docs/components/vertical-tabs
+                - generic [ref=e114]: Vertical Tabs
+    - main [ref=e115]:
+      - navigation [ref=e117]:
+        - button "Toggle Sidebar" [ref=e118]:
+          - img
+          - generic [ref=e119]: Toggle Sidebar
+        - generic [ref=e120]:
+          - button "Search documentation... ⌘ K" [ref=e121]:
+            - generic [ref=e122]:
+              - img [ref=e123]
+              - generic [ref=e126]: Search documentation...
+            - generic [ref=e127]:
+              - generic [ref=e128]: ⌘
+              - generic: K
+          - generic [ref=e129]:
+            - heading "Command Palette" [level=2] [ref=e130]
+            - paragraph [ref=e131]: Search for a command to run...
+          - button "Toggle theme" [ref=e132]:
+            - img
+            - generic [ref=e133]: Toggle theme
+      - main [ref=e134]:
+        - generic [ref=e135]:
+          - button "On this page" [ref=e138]:
+            - generic [ref=e139]:
+              - img [ref=e140]
+              - generic [ref=e141]: On this page
+            - img [ref=e142]
+          - main [ref=e145]:
+            - article [ref=e146]:
+              - generic [ref=e147]:
+                - heading "3D Book" [level=1] [ref=e148]
+                - generic [ref=e149]:
+                  - tablist [ref=e150]:
+                    - tab "Preview" [selected] [ref=e151]
+                    - tab "Code" [ref=e152]
+                  - tabpanel "Preview" [ref=e153]:
+                    - generic [ref=e174]:
+                      - generic: Notebook
+                      - generic [ref=e179]: Back Page
+                - heading "Installation" [level=2] [ref=e180]:
+                  - link "Installation" [ref=e181] [cursor=pointer]:
+                    - /url: "#installation"
+                  - img [ref=e182]
+                - generic [ref=e185]:
+                  - tablist [ref=e186]:
+                    - tab "CLI" [selected] [ref=e187]
+                    - tab "Manual" [ref=e188]
+                  - tabpanel "CLI" [ref=e189]:
+                    - figure [ref=e190]:
+                      - button "Copy Text" [ref=e192]:
+                        - img [ref=e193]
+                      - region [ref=e196]:
+                        - code [ref=e198]:
+                          - generic [ref=e199]: npx shadcn@latest add "https://uselayouts.com/r/3d-book.json"
+                - heading "Usage" [level=2] [ref=e200]:
+                  - link "Usage" [ref=e201] [cursor=pointer]:
+                    - /url: "#usage"
+                  - img [ref=e202]
+                - figure [ref=e205]:
+                  - button "Copy Text" [ref=e207]:
+                    - img [ref=e208]
+                  - region [ref=e211]:
+                    - code [ref=e213]:
+                      - generic [ref=e214]: import InteractiveBook from "@/components/3d-book";
+                      - generic [ref=e216]: "export default function Page() {"
+                      - generic [ref=e217]: return (
+                      - generic [ref=e218]: <div className="h-[500px] w-full">
+                      - generic [ref=e219]: <InteractiveBook />
+                      - generic [ref=e220]: </div>
+                      - generic [ref=e221]: );
+                      - generic [ref=e222]: "}"
+                - heading "Features" [level=2] [ref=e223]:
+                  - link "Features" [ref=e224] [cursor=pointer]:
+                    - /url: "#features"
+                  - img [ref=e225]
+                - list [ref=e228]:
+                  - listitem [ref=e229]:
+                    - strong [ref=e230]: 3D Perspective
+                    - text: ": Realistic book cover and page depth using CSS 3D transforms."
+                  - listitem [ref=e231]:
+                    - strong [ref=e232]: Interactive
+                    - text: ": Book opens responsively on hover or drag interaction."
+                  - listitem [ref=e233]:
+                    - strong [ref=e234]: Performance
+                    - text: ": Pure CSS/JS implementation without heavy WebGL dependencies."
+                  - listitem [ref=e235]:
+                    - strong [ref=e236]: Responsive
+                    - text: ": Adapts to container size (desktop and mobile friendly)."
+                  - listitem [ref=e237]:
+                    - strong [ref=e238]: Customizable
+                    - text: ": Easy to swap cover art or page content."
+              - generic [ref=e239]:
+                - link "Introduction" [ref=e240] [cursor=pointer]:
+                  - /url: /docs/introduction
+                  - img [ref=e241]
+                  - generic [ref=e243]: Introduction
+                - link "Animated Collection" [ref=e244] [cursor=pointer]:
+                  - /url: /docs/components/animated-collection
+                  - generic [ref=e245]: Animated Collection
+                  - img [ref=e246]
+  - alert [ref=e248]

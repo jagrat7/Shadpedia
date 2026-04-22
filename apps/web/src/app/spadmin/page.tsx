@@ -3,7 +3,7 @@
 import { useState } from "react"
 import Link from "next/link"
 import { Play, RotateCw, Check, X, Clock } from "lucide-react"
-import { StagehandEmbed } from "./stagehand"
+import { runStagehand } from "./main"
 
 type JobStatus = "idle" | "running" | "completed" | "failed"
 
@@ -47,16 +47,18 @@ export default function AdminPage() {
   const [scrapedComponents, setScrapedComponents] = useState<ScrapedComponent[]>([])
   const [activeTab, setActiveTab] = useState<"jobs" | "components">("jobs")
 
-  const dispatchScrape = () => {
-    if (!registryUrl.trim()) return
+  const dispatchScrape = async () => {
+    const targetUrl = registryUrl.trim()
+
+    if (!targetUrl) return
 
     const job: Job = {
       id: crypto.randomUUID(),
       type: "scrape",
-      target: registryUrl.trim(),
+      target: targetUrl,
       status: "running",
       startedAt: new Date().toISOString(),
-      output: [`Scraping ${registryUrl.trim()}...`],
+      output: [`Scraping ${targetUrl}...`],
     }
 
     setJobs((prev) => [job, ...prev])
@@ -65,8 +67,30 @@ export default function AdminPage() {
     // TODO: dispatch inngest event via API
     // POST /api/inngest/send { name: "site/added", data: { url: registryUrl } }
 
-    // Simulate job progress
-    setTimeout(() => {
+    try {
+      const { components, logs } = await runStagehand(targetUrl)
+
+      const source = (() => {
+        try {
+          return new URL(targetUrl).hostname
+        } catch {
+          return targetUrl
+        }
+      })()
+
+      const newComponents: ScrapedComponent[] = components.map((c) => ({
+        id: crypto.randomUUID(),
+        name: c.name,
+        source,
+        slug: c.name.toLowerCase().replace(/\s+/g, "-"),
+        description: c.description,
+        tags: [],
+        install: "",
+        status: "pending",
+      }))
+
+      setScrapedComponents((prev) => [...newComponents, ...prev])
+
       setJobs((prev) =>
         prev.map((j) =>
           j.id === job.id
@@ -75,23 +99,28 @@ export default function AdminPage() {
                 status: "completed",
                 output: [
                   ...j.output,
-                  "Found 8 components",
-                  "Extracting metadata...",
-                  "Generating embeddings...",
-                  "Done — 8 components ready for review",
+                  ...logs,
+                  `Extracted ${components.length} components`,
                 ],
               }
             : j,
         ),
       )
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error)
 
-      setScrapedComponents((prev) => [
-        ...prev,
-        { id: crypto.randomUUID(), name: "Animated Tabs", source: registryUrl.trim() || job.target, slug: "animated-tabs", description: "Smooth animated tab transitions with spring physics.", tags: ["animation", "navigation"], install: "npx shadcn@latest add animated-tabs", status: "pending" },
-        { id: crypto.randomUUID(), name: "Glow Card", source: registryUrl.trim() || job.target, slug: "glow-card", description: "A card with a glowing border effect on hover.", tags: ["effect", "hover"], install: "npx shadcn@latest add glow-card", status: "pending" },
-        { id: crypto.randomUUID(), name: "Magnetic Button", source: registryUrl.trim() || job.target, slug: "magnetic-button", description: "Button that magnetically attracts to cursor on hover.", tags: ["animation", "action"], install: "npx shadcn@latest add magnetic-button", status: "pending" },
-      ])
-    }, 2000)
+      setJobs((prev) =>
+        prev.map((j) =>
+          j.id === job.id
+            ? {
+                ...j,
+                status: "failed",
+                output: [...j.output, message],
+              }
+            : j,
+        ),
+      )
+    }
   }
 
   const dispatchAnalyse = () => {
@@ -169,8 +198,6 @@ export default function AdminPage() {
         <p className="mt-2 text-muted-foreground">
           Dispatch scraping jobs, review outputs, and finalize components.
         </p>
-        			<StagehandEmbed />
-
         {/* Dispatch Section */}
         <div className="mt-8 grid gap-6 md:grid-cols-[1fr_auto_auto]">
           <div className="relative">

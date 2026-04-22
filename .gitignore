@@ -62,3 +62,8 @@ temp
 
 /dummy-project
 .mcp.json
+
+.swc
+
+.next
+.clerk
