@@ -27,6 +27,7 @@ export async function componentsCrawl(
   const results: ExtractedComponent[] = []
 
   for (const link of links) {
+    // if (Math.random() < 0.5) throw new Error(`Simulated failure on ${link.name}`)
     info(`Scraping ${link.name} at ${link.url}...`)
     await page.goto(link.url)
     await page.waitForLoadState("domcontentloaded")
