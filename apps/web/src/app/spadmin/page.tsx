@@ -64,32 +64,8 @@ export default function AdminPage() {
     setJobs((prev) => [job, ...prev])
     setRegistryUrl("")
 
-    // TODO: dispatch inngest event via API
-    // POST /api/inngest/send { name: "site/added", data: { url: registryUrl } }
-
     try {
-      const { components, logs } = await runStagehand(targetUrl)
-
-      const source = (() => {
-        try {
-          return new URL(targetUrl).hostname
-        } catch {
-          return targetUrl
-        }
-      })()
-
-      const newComponents: ScrapedComponent[] = components.map((c) => ({
-        id: crypto.randomUUID(),
-        name: c.name,
-        source,
-        slug: c.name.toLowerCase().replace(/\s+/g, "-"),
-        description: c.description,
-        tags: [],
-        install: "",
-        status: "pending",
-      }))
-
-      setScrapedComponents((prev) => [...newComponents, ...prev])
+      const { runId } = await runStagehand(targetUrl)
 
       setJobs((prev) =>
         prev.map((j) =>
@@ -97,11 +73,7 @@ export default function AdminPage() {
             ? {
                 ...j,
                 status: "completed",
-                output: [
-                  ...j.output,
-                  ...logs,
-                  `Extracted ${components.length} components`,
-                ],
+                output: [...j.output, `Workflow started (runId: ${runId})`],
               }
             : j,
         ),

@@ -18,6 +18,7 @@ export async function componentsCrawl(
   info: (msg: string) => void,
   links: ComponentLink[],
 ): Promise<ExtractedComponent[]> {
+  "use step"
   const page = stagehand.context.activePage()
 
   if (!page) {

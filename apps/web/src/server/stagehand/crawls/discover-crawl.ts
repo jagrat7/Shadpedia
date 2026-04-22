@@ -13,6 +13,8 @@ export async function discoverCrawl(
   info: (msg: string) => void,
   indexUrl: string,
 ): Promise<ComponentLink[]> {
+  "use step"
+
   const page = stagehand.context.activePage()
 
   if (!page) {
