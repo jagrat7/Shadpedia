@@ -41,7 +41,9 @@ async function discoverStep(url: string): Promise<{ links: ComponentLink[]; logs
   }
 }
 
-async function componentsStep(links: ComponentLink[]): Promise<{ components: ExtractedComponent[]; logs: string[] }> {
+async function componentsStep(
+  links: ComponentLink[],
+): Promise<{ components: ExtractedComponent[]; logs: string[] }> {
   "use step"
 
   const { info, logs, handleStagehandLog } = createRunLogger()
