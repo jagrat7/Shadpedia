@@ -2,7 +2,7 @@ set dotenv-load
 
 # Run web app
 dev:
-    just web
+    bun run dev
 
 # Run Next.js dev server
 web:

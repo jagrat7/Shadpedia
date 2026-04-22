@@ -1,7 +1,0 @@
-{
-  "[typescriptreact]": {
-    "editor.defaultFormatter": "oxc.oxc-vscode"
-  },
-  "python.defaultInterpreterPath": "${workspaceFolder}/apps/api/.venv/bin/python",
-  "python.analysis.extraPaths": ["${workspaceFolder}/apps/api"]
-}
