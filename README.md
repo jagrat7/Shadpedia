@@ -92,7 +92,8 @@ graph TD
     end
 
     Tunnel["Cloudflare Tunnel"]
-    Google["Google Gemini<br/>Flash + Embedding"]
+    Google["Google Gemini<br/>Embedding"]
+    GLM["GLM5<br/>Description"]
 
     Browser -->|requests| Next
     Browser -->|sign in| Auth
@@ -104,6 +105,7 @@ graph TD
     Workflow -->|Drizzle| Postgres
     Next -->|embed query| Gateway
     Gateway --> Google
+    Gateway --> GLM
 
     style Next fill:#0070f3,color:#fff
     style Workflow fill:#0070f3,color:#fff
@@ -113,6 +115,7 @@ graph TD
     style Tunnel fill:#f38020,color:#fff
     style Auth fill:#6c47ff,color:#fff
     style Google fill:#4285f4,color:#fff
+    style GLM fill:#10b981,color:#fff
 ```
 
 ### Data Flow
@@ -121,7 +124,7 @@ Two distinct paths: a hot search path and a durable background ingest pipeline.
 
 **Search (latency-sensitive)**: User query → Next.js server action → AI Gateway (Gemini embedding) → pgvector ANN search over components → ranked results.
 
-**Ingest (durable background)**: Admin submits site in admin panel → Vercel Workflow starts → step 1 calls Stagehand on the home PC through the Cloudflare Tunnel to discover component URLs → one durable step per component fetches the component, generates a description (Gemini Flash) and an embedding (gemini-embedding-001), and upserts into Neon. Each step is independently retriable; if the PC is offline mid-crawl the workflow resumes when reachable.
+**Ingest (durable background)**: Admin submits site in admin panel → Vercel Workflow starts → step 1 calls Stagehand on the home PC through the Cloudflare Tunnel to discover component URLs → one durable step per component fetches the component, generates a description (GLM5) and an embedding (gemini-embedding-001), and upserts into Neon. Each step is independently retriable; if the PC is offline mid-crawl the workflow resumes when reachable.
 
 ```mermaid
 graph LR

@@ -1,13 +1,10 @@
 export default async function SandboxPage() {
-  const res = await fetch("http://localhost:3001/api/health")
-  const data = await res.json()
-
   return (
     <div className="p-8">
-      <h1 className="text-2xl font-bold">API Health Check</h1>
-      <pre className="mt-4 rounded-md bg-muted p-4">
-        {JSON.stringify(data, null, 2)}
-      </pre>
+      <h1 className="text-2xl font-bold">Sandbox</h1>
+      <p className="mt-4 text-muted-foreground">
+        This page is ready for local UI experiments.
+      </p>
     </div>
   )
 }
