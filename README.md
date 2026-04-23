@@ -89,7 +89,6 @@ graph LR
 shadpedia/
 ├── apps/
 │   ├── web/         # Next.js — UI, SSR, auth (Vercel)
-│   └── ai/          # FastAPI — API, DB, search, LLMs (Railway)
 ├── packages/
 │   ├── ui/          # Shared shadcn/ui components and styles
 │   ├── config/      # Shared TypeScript config
