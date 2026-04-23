@@ -152,27 +152,7 @@
     @apply font-sans;
   }
 
-  /* Wikipedia-style heading rule — serif, bold, bottom-ruled. Sizes come from Tailwind utilities at the call site. */
-  h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-serif);
-    font-weight: 700;
-    border-bottom: 1px solid var(--border);
-    padding-bottom: 0.25em;
-    margin-bottom: 0.5em;
-    line-height: 1.2;
-  }
 
-  /* Inline prose links only — block wrappers opt out with no-underline */
-  a:where(:not([class])) {
-    color: var(--primary);
-    text-decoration: underline;
-    text-underline-offset: 2px;
-    text-decoration-thickness: 1px;
-  }
-
-  a:where(:not([class])):hover {
-    text-decoration-thickness: 2px;
-  }
   ::view-transition-group(root) {
     animation-timing-function: var(--expo-out);
   }
