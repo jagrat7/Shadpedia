@@ -11,7 +11,17 @@ export type StagehandRunResult = {
   logs: string[]
 }
 
-function createStagehand(handleStagehandLog: ConstructorParameters<typeof Stagehand>[0]["logger"]) {
+const stagehandModelGateway = "gateway"
+
+const defaultStagehandModel = {
+  modelName: "anthropic/claude-haiku-4-5",
+  apiKey: env.VERCEL_AI_GATEWAY_API_KEY,
+}
+
+function createStagehand(
+  handleStagehandLog: ConstructorParameters<typeof Stagehand>[0]["logger"],
+  modelName: string = defaultStagehandModel.modelName,
+) {
   return new Stagehand({
     env: "LOCAL",
     experimental: true,
@@ -20,8 +30,8 @@ function createStagehand(handleStagehandLog: ConstructorParameters<typeof Stageh
     logger: handleStagehandLog,
     disablePino: true,
     model: {
-      modelName: "gateway/anthropic/claude-haiku-4-5",
-      apiKey: env.VERCEL_AI_GATEWAY_API_KEY,
+      modelName: `${stagehandModelGateway}/${modelName}`,
+      apiKey: defaultStagehandModel.apiKey,
     },
   })
 }
@@ -49,7 +59,7 @@ async function componentsStep(
   "use step"
 
   const { info, logs, handleStagehandLog } = createRunLogger()
-  const stagehand = createStagehand(handleStagehandLog)
+  const stagehand = createStagehand(handleStagehandLog, "zai/glm-5")
   await stagehand.init()
 
   try {

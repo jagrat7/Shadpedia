@@ -9,6 +9,7 @@ export const extractedComponentSchema = z.object({
     .describe(
       "A concise 1 to 2 sentence summary of what the component does based on the visible docs and example code",
     ),
+  installCommand: z.string().describe("The shadcncli command to install the component"),
 })
 
 export type ExtractedComponent = z.infer<typeof extractedComponentSchema>
@@ -48,6 +49,7 @@ export async function componentsCrawl(
       Return exactly one component with:
       - the canonical component name shown on the page
       - a concise description based on the heading, surrounding documentation, and any visible code example
+      - the shadcncli command to install the component
 
       Do not invent data. If no component is clearly documented, return an empty array.`,
       z.array(extractedComponentSchema),
