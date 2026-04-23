@@ -4,7 +4,7 @@ import { AlertCircle, ChevronDown, RotateCw } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@my-better-t-app/ui/components/card"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@my-better-t-app/ui/components/collapsible"
 import { ScrollArea } from "@my-better-t-app/ui/components/scroll-area"
-import type { Job } from "./jobs"
+import type { Job } from "./jobs-table"
 
 export function ComponentPreview({ job }: { job: Job | null }) {
   if (!job) {

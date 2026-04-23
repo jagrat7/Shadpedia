@@ -9,6 +9,7 @@ export default function Header() {
   const navLinks = [
     { href: "/", label: "Home" },
     { href: "/browse", label: "Browse" },
+    
   ] as const
 
   return (
@@ -28,6 +29,14 @@ export default function Header() {
                 {label}
               </Link>
             ))}
+            <Show when="signed-in">
+              <Link
+                href="/spadmin"
+                className="text-sm font-semibold uppercase tracking-widest text-foreground transition-colors hover:text-accent hover:no-underline"
+              >
+                Admin
+              </Link>
+            </Show>
           </nav>
         </div>
         <div className="flex items-center gap-4">
@@ -41,11 +50,20 @@ export default function Header() {
                 {label}
               </Link>
             ))}
+            <Show when="signed-in">
+              <Link
+                href="/spadmin"
+                className="text-xs font-semibold uppercase tracking-widest text-foreground transition-colors hover:text-accent hover:no-underline"
+              >
+                Admin
+              </Link>
+            </Show>
           </nav>
           <ModeToggle />
           <Show when="signed-in">
             <UserButton />
           </Show>
+          
         </div>
       </div>
     </header>

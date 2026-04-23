@@ -3,18 +3,28 @@
 import { useState } from "react"
 import Link from "next/link"
 import { Play } from "lucide-react"
-import { Button } from "@my-better-t-app/ui/components/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@my-better-t-app/ui/components/card"
-import { Input } from "@my-better-t-app/ui/components/input"
+
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@my-better-t-app/ui/components/breadcrumb"
+import { Card, CardContent, CardHeader } from "@my-better-t-app/ui/components/card"
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+} from "@my-better-t-app/ui/components/input-group"
+import { H1, H2, H3, Label, Lead } from "@my-better-t-app/ui/components/typography"
 
 import { runStagehand } from "./main"
-import { JobsTable, type Job, type JobStatus } from "./jobs"
+import { JobsTable, type Job, type JobStatus } from "./jobs-table"
 import { ComponentPreview } from "./component-preview"
 import type { StagehandRunResult } from "../../server/stagehand"
-
-
-
-
 
 export default function AdminPage() {
   const [registryUrl, setRegistryUrl] = useState("")
@@ -61,60 +71,88 @@ export default function AdminPage() {
   const running = jobs.filter((j) => j.status === "running").length
   const totalComponents = jobs.reduce((acc, j) => acc + (j.result?.components.length ?? 0), 0)
 
+  const stats = [
+    { label: "Total jobs", value: jobs.length },
+    { label: "Running", value: running },
+    { label: "Components found", value: totalComponents },
+  ]
+
   return (
     <main className="bg-background min-h-screen">
       <div className="mx-auto max-w-5xl px-4 py-10 md:px-6">
-        <nav className="text-sm text-muted-foreground mb-6">
-          <Link href="/" className="text-primary hover:underline">Shadpedia</Link>
-          <span className="mx-1">&gt;</span>
-          <span className="text-foreground">Admin</span>
-        </nav>
+        <Breadcrumb className="mb-6">
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink render={<Link href="/" />}>Shadpedia</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>Admin</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
 
-        <h1 className="font-serif text-3xl font-bold md:text-4xl">Admin Panel</h1>
-        <p className="mt-2 text-muted-foreground">Dispatch scraping jobs and review extracted components.</p>
+        <H1>Admin Panel</H1>
+        <Lead className="mt-2 max-w-xl">Dispatch scraping jobs and review extracted components.</Lead>
 
-        <div className="mt-8 flex gap-3">
-          <Input
-            type="url"
-            placeholder="Enter registry URL to scrape..."
-            value={registryUrl}
-            onChange={(e) => setRegistryUrl(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && dispatchScrape()}
-            className="flex-1"
-          />
-          <Button onClick={dispatchScrape} disabled={!registryUrl.trim()} className="gap-2">
-            <Play className="h-4 w-4" />
-            Scrape
-          </Button>
-        </div>
+        <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-[1fr_280px]">
+          <div className="flex flex-col gap-8">
+            <InputGroup className="h-11 border-2 border-foreground focus-within:hard-shadow">
+              <InputGroupInput
+                type="url"
+                placeholder="Enter registry URL to scrape..."
+                value={registryUrl}
+                onChange={(e) => setRegistryUrl(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && dispatchScrape()}
+                className="text-sm"
+              />
+              <InputGroupAddon align="inline-end">
+                <InputGroupButton
+                  size="sm"
+                  variant="default"
+                  onClick={dispatchScrape}
+                  disabled={!registryUrl.trim()}
+                  className="gap-1.5"
+                >
+                  <Play className="size-3.5" />
+                  Scrape
+                </InputGroupButton>
+              </InputGroupAddon>
+            </InputGroup>
 
-        <div className="mt-8 grid gap-4 sm:grid-cols-3">
-          {[
-            { label: "Total Jobs", value: jobs.length },
-            { label: "Running", value: running },
-            { label: "Components Found", value: totalComponents },
-          ].map((stat) => (
-            <Card key={stat.label}>
-              <CardHeader className="pb-1 pt-4 px-4">
-                <CardTitle className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                  {stat.label}
-                </CardTitle>
+            <section className="space-y-4">
+              <H2 className="text-xl md:text-2xl">Scraping runs</H2>
+              <JobsTable
+                jobs={jobs}
+                selectedJobId={selectedJobId}
+                onSelect={setSelectedJobId}
+                onResult={handleResult}
+              />
+              <ComponentPreview job={selectedJob} />
+            </section>
+          </div>
+
+          <aside>
+            <Card className="border-2 border-foreground ring-0">
+              <CardHeader>
+                <H3>Run summary</H3>
               </CardHeader>
-              <CardContent className="px-4 pb-4">
-                <p className="font-serif text-2xl font-bold">{stat.value}</p>
+              <CardContent>
+                <dl className="space-y-3">
+                  {stats.map((stat) => (
+                    <div key={stat.label}>
+                      <dt>
+                        <Label>{stat.label}</Label>
+                      </dt>
+                      <dd className="mt-0.5 text-lg font-semibold tabular-nums text-foreground">
+                        {stat.value}
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
               </CardContent>
             </Card>
-          ))}
-        </div>
-
-        <div className="mt-8 space-y-4">
-          <JobsTable
-            jobs={jobs}
-            selectedJobId={selectedJobId}
-            onSelect={setSelectedJobId}
-            onResult={handleResult}
-          />
-          <ComponentPreview job={selectedJob} />
+          </aside>
         </div>
       </div>
     </main>
