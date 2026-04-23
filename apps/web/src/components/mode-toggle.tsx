@@ -5,7 +5,6 @@ import { Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
 
 type ThemeMode = "light" | "dark"
-type ThemeTransitionOrigin = "top-left" | "top-right"
 type ViewTransitionLike = {
   finished?: Promise<unknown>
 }
@@ -13,35 +12,22 @@ type DocumentWithViewTransition = Document & {
   startViewTransition?: (update: () => void) => ViewTransitionLike | void
 }
 
-type ModeToggleProps = {
-  transitionOrigin?: ThemeTransitionOrigin
-}
-
-export function ModeToggle({
-  transitionOrigin = "top-right",
-}: ModeToggleProps) {
+export function ModeToggle() {
   const { resolvedTheme, setTheme } = useTheme()
 
   const handleThemeChange = (theme: ThemeMode) => {
     const documentWithViewTransition = document as DocumentWithViewTransition
     const startViewTransition = documentWithViewTransition.startViewTransition?.bind(document)
-    const rootElement = document.documentElement
     const updateTheme = () => {
-      rootElement.classList.toggle("theme-transition-top-right", transitionOrigin === "top-right")
       setTheme(theme)
-    }
-    const clearRightOriginClass = () => {
-      rootElement.classList.remove("theme-transition-top-right")
     }
 
     if (!startViewTransition) {
       updateTheme()
-      clearRightOriginClass()
       return
     }
 
-    const transition = startViewTransition(updateTheme)
-    transition?.finished?.finally(clearRightOriginClass)
+    startViewTransition(updateTheme)
   }
 
   const handleToggle = () => {
