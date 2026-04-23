@@ -20,8 +20,11 @@ ui-add +deps:
 ui-add-dev +deps:
     cd packages/ui && bun add -d {{deps}}
 
-ui +args:
+ui-lz +args:
     cd packages/ui && bunx shadcn@latest {{args}}
+
+ui +args:
+    cd packages/ui && {{args}}
 
 # Format all
 fmt:
