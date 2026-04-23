@@ -22,7 +22,7 @@ graph TD
 
     subgraph App["Vercel App Layer"]
         Next["Next.js app<br/>UI + server actions + admin"]
-        Workflow["Vercel Workflows<br/>[search, crawl & indexing jobs]"]
+        Workflow["Vercel Workflows<br/>[crawl & indexing jobs]"]
     end
 
     subgraph Data["Data Layer"]
