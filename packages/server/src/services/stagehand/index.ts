@@ -35,7 +35,6 @@ function createStagehand(
     },
   })
 }
-//moonshotai/kimi-k2.5 anthropic/claude-haiku-4-5
 async function discoverStep(url: string): Promise<{ links: ComponentLink[]; logs: string[] }> {
   "use step"
 

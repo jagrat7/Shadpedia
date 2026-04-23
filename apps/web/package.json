@@ -5,15 +5,20 @@
   "scripts": {
     "dev": "next dev --port 3001",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "check-types": "tsc --noEmit"
   },
   "dependencies": {
     "@browserbasehq/sdk": "^2.10.0",
     "@browserbasehq/stagehand": "^3.2.1",
     "@clerk/nextjs": "^7.0.7",
+    "@my-better-t-app/api": "workspace:*",
     "@my-better-t-app/env": "workspace:*",
     "@my-better-t-app/ui": "workspace:*",
     "@tanstack/react-query": "^5.95.2",
+    "@trpc/client": "catalog:",
+    "@trpc/server": "catalog:",
+    "@trpc/tanstack-react-query": "^11.7.2",
     "babel-plugin-react-compiler": "^1.0.0",
     "better-result": "^2.8.2",
     "dotenv": "catalog:",

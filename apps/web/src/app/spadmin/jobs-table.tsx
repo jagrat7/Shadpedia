@@ -1,22 +1,14 @@
-import { useEffect, useRef } from "react"
 import { Check, RotateCw, X } from "lucide-react"
 import { Badge } from "@my-better-t-app/ui/components/badge"
 import { Card, CardContent, CardHeader, CardTitle } from "@my-better-t-app/ui/components/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@my-better-t-app/ui/components/table"
-import { getRunResult, getRunStatus } from "./main"
-import type { StagehandRunResult } from "../../server/stagehand"
+import type { inferRouterOutputs } from "@trpc/server"
+import type { AppRouter } from "@my-better-t-app/api/routers/index"
+import type { StagehandRunResult } from "../../../../../packages/server/src/services/stagehand"
 
 export type JobStatus = "running" | "completed" | "failed" | "cancelled"
 
-export interface Job {
-  id: string
-  runId: string
-  target: string
-  status: JobStatus
-  startedAt: string
-  result: StagehandRunResult | null
-  errorMessage: string | null
-}
+export type Job = inferRouterOutputs<AppRouter>["spadmin"]["listJobs"][number]
 
 const STATUS_VARIANT: Record<JobStatus, "default" | "secondary" | "destructive" | "outline"> = {
   running: "secondary",
@@ -40,34 +32,13 @@ function JobRow({
   job,
   selected,
   onSelect,
-  onResult,
 }: {
   job: Job
   selected: boolean
   onSelect: (id: string) => void
-  onResult: (id: string, result: StagehandRunResult | null, status: JobStatus, errorMessage: string | null) => void
 }) {
-  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
-
-  useEffect(() => {
-    if (job.status !== "running" || !job.runId) return
-
-    intervalRef.current = setInterval(async () => {
-      const { status } = await getRunStatus(job.runId)
-      if (status === "running") return
-      clearInterval(intervalRef.current!)
-      if (status === "completed") {
-        const result = await getRunResult(job.runId)
-        onResult(job.id, result, "completed", null)
-      } else {
-        onResult(job.id, null, status as JobStatus, `Workflow ${status}`)
-      }
-    }, 3000)
-
-    return () => clearInterval(intervalRef.current!)
-  }, [job.runId, job.status, job.id, onResult])
-
-  const components = job.result?.components ?? []
+  const result = job.result as StagehandRunResult | null
+  const components = result?.components ?? []
 
   return (
     <TableRow
@@ -94,12 +65,10 @@ export function JobsTable({
   jobs,
   selectedJobId,
   onSelect,
-  onResult,
 }: {
   jobs: Job[]
   selectedJobId: string | null
   onSelect: (id: string) => void
-  onResult: (id: string, result: StagehandRunResult | null, status: JobStatus, errorMessage: string | null) => void
 }) {
   return (
     <Card>
@@ -132,7 +101,6 @@ export function JobsTable({
                 job={job}
                 selected={selectedJobId === job.id}
                 onSelect={onSelect}
-                onResult={onResult}
               />
             ))}
           </TableBody>

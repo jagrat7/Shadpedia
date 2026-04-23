@@ -78,7 +78,7 @@ export default function BrowsePage() {
           {filtered.map((comp) => (
             <Link
               key={comp.slug}
-              href={`/components/${comp.slug}`}
+              href={`/shad-components/${comp.slug}`}
               className="group flex flex-col border-2 border-foreground bg-card p-6 transition-all hover:hard-shadow no-underline"
             >
               <div className="mb-1 text-xs font-medium uppercase tracking-widest text-accent">

@@ -1,8 +1,9 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import { Play } from "lucide-react"
+import { useMutation, useQuery } from "@tanstack/react-query"
 
 import {
   Breadcrumb,
@@ -20,52 +21,48 @@ import {
   InputGroupInput,
 } from "@my-better-t-app/ui/components/input-group"
 import { H1, H2, H3, Label, Lead } from "@my-better-t-app/ui/components/typography"
+import { trpc, queryClient } from "@/utils/trpc"
 
-import { runStagehand } from "./main"
-import { JobsTable, type Job, type JobStatus } from "./jobs-table"
+import { JobsTable } from "./jobs-table"
 import { ComponentPreview } from "./component-preview"
-import type { StagehandRunResult } from "../../server/stagehand"
+
+const JOBS_REFETCH_INTERVAL_MS = 3000
 
 export default function AdminPage() {
   const [registryUrl, setRegistryUrl] = useState("")
-  const [jobs, setJobs] = useState<Job[]>([])
   const [selectedJobId, setSelectedJobId] = useState<string | null>(null)
 
-  const handleResult = (id: string, result: StagehandRunResult | null, status: JobStatus, errorMessage: string | null) => {
-    setJobs((prev) => prev.map((j) => j.id === id ? { ...j, status, result, errorMessage } : j))
-  }
+  const jobsQueryOptions = trpc.spadmin.listJobs.queryOptions(undefined, {
+    refetchInterval: (query) => {
+      const jobs = query.state.data ?? []
+      return jobs.some((job) => job.status === "running") ? JOBS_REFETCH_INTERVAL_MS : false
+    },
+  })
+  const jobsQuery = useQuery(jobsQueryOptions)
+  const createJob = useMutation(trpc.spadmin.createJob.mutationOptions({
+    onSuccess: (job) => {
+      setSelectedJobId(job.id)
+      queryClient.invalidateQueries({
+        queryKey: jobsQueryOptions.queryKey,
+      })
+    },
+  }))
+
+  const jobs = jobsQuery.data ?? []
 
   const dispatchScrape = async () => {
     const target = registryUrl.trim()
     if (!target) return
     setRegistryUrl("")
 
-    const placeholder: Job = {
-      id: crypto.randomUUID(),
-      runId: "",
-      target,
-      status: "running",
-      startedAt: new Date().toISOString(),
-      result: null,
-      errorMessage: null,
-    }
-    setJobs((prev) => [placeholder, ...prev])
-    setSelectedJobId(placeholder.id)
-
-    try {
-      const { runId } = await runStagehand(target)
-      setJobs((prev) => prev.map((j) => j.id === placeholder.id ? { ...j, runId } : j))
-    } catch (err) {
-      const message = err instanceof Error ? err.message : String(err)
-      setJobs((prev) =>
-        prev.map((j) =>
-          j.id === placeholder.id
-            ? { ...j, status: "failed", errorMessage: message }
-            : j,
-        ),
-      )
-    }
+    await createJob.mutateAsync({ target })
   }
+
+  useEffect(() => {
+    if (!selectedJobId && jobs.length > 0) {
+      setSelectedJobId(jobs[0].id)
+    }
+  }, [jobs, selectedJobId])
 
   const selectedJob = jobs.find((j) => j.id === selectedJobId) ?? null
   const running = jobs.filter((j) => j.status === "running").length
@@ -111,10 +108,10 @@ export default function AdminPage() {
                   size="sm"
                   variant="default"
                   onClick={dispatchScrape}
-                  disabled={!registryUrl.trim()}
+                  disabled={!registryUrl.trim() || createJob.isPending}
                   className="gap-1.5"
                 >
-                  <Play className="size-3.5" />
+                  <Play className={createJob.isPending ? "size-3.5 animate-pulse" : "size-3.5"} />
                   Scrape
                 </InputGroupButton>
               </InputGroupAddon>
@@ -126,7 +123,6 @@ export default function AdminPage() {
                 jobs={jobs}
                 selectedJobId={selectedJobId}
                 onSelect={setSelectedJobId}
-                onResult={handleResult}
               />
               <ComponentPreview job={selectedJob} />
             </section>

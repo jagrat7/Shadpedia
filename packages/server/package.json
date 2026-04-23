@@ -1,0 +1,37 @@
+{
+  "name": "@my-better-t-app/api",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "default": "./src/index.ts"
+    },
+    "./context": {
+      "default": "./src/api/context.ts"
+    },
+    "./routers/*": {
+      "default": "./src/api/routers/*.ts"
+    },
+    "./*": {
+      "default": "./src/*.ts"
+    }
+  },
+  "scripts": {
+    "check-types": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@my-better-t-app/db": "workspace:*",
+    "@my-better-t-app/env": "workspace:*",
+    "@browserbasehq/stagehand": "^3.2.1",
+    "better-result": "^2.8.2",
+    "dotenv": "catalog:",
+    "pino": "^10.3.1",
+    "workflow": "^4.2.4",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@my-better-t-app/config": "workspace:*",
+    "typescript": "^5"
+  }
+}
