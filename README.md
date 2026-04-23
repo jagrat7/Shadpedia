@@ -77,11 +77,6 @@ graph LR
     style Search fill:#f0fdf4,stroke:#16a34a
     style Workflows fill:#fef3c7,stroke:#d97706
 ```
-## Current progress
-[![YouTube](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/K7lwUvfWOBg)
-
-
-
 
 ## Project Structure
 
