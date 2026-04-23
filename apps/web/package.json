@@ -15,6 +15,7 @@
     "@my-better-t-app/ui": "workspace:*",
     "@tanstack/react-query": "^5.95.2",
     "babel-plugin-react-compiler": "^1.0.0",
+    "better-result": "^2.8.2",
     "dotenv": "catalog:",
     "lucide-react": "catalog:",
     "next": "^16.2.0",

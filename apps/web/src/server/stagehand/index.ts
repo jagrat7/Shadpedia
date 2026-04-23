@@ -20,12 +20,12 @@ function createStagehand(handleStagehandLog: ConstructorParameters<typeof Stageh
     logger: handleStagehandLog,
     disablePino: true,
     model: {
-      modelName: "gateway/anthropic/claude-haiku-4.5",
+      modelName: "gateway/anthropic/claude-haiku-4-5",
       apiKey: env.VERCEL_AI_GATEWAY_API_KEY,
     },
   })
 }
-
+//moonshotai/kimi-k2.5 anthropic/claude-haiku-4-5
 async function discoverStep(url: string): Promise<{ links: ComponentLink[]; logs: string[] }> {
   "use step"
 
@@ -40,6 +40,8 @@ async function discoverStep(url: string): Promise<{ links: ComponentLink[]; logs
     await stagehand.close()
   }
 }
+
+discoverStep.maxRetries = 5
 
 async function componentsStep(
   links: ComponentLink[],

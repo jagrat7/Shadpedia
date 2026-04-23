@@ -7,6 +7,22 @@ const STAGEHAND_LEVEL_TO_PINO: Record<NonNullable<LogLine["level"]>, Level> = {
   2: "debug",
 }
 
+const ANSI_RESET = "\u001B[0m"
+const LEVEL_COLORS: Record<Level, string> = {
+  fatal: "\u001B[35m",
+  error: "\u001B[31m",
+  warn: "\u001B[33m",
+  info: "\u001B[36m",
+  debug: "\u001B[90m",
+  trace: "\u001B[34m",
+}
+
+function colorizeLevel(level: Level, text: string) {
+  const color = LEVEL_COLORS[level]
+
+  return color ? `${color}${text}${ANSI_RESET}` : text
+}
+
 export function stringifyLogAuxiliary(logLine: LogLine) {
   if (!logLine.auxiliary) {
     return ""
@@ -41,10 +57,15 @@ export function createRunLogger(): RunLogger {
   const destination: DestinationStream = {
     write(chunk: string) {
       try {
-        const { time, msg } = JSON.parse(chunk) as { time: number; msg: string }
-        const line = `[${new Date(time).toLocaleTimeString()}] ${msg}`
+        const { level = "info", msg, time } = JSON.parse(chunk) as {
+          level?: Level
+          msg: string
+          time: number
+        }
+        const levelLabel = colorizeLevel(level, `[${level.toUpperCase()}]`)
+        const line = `[${new Date(time).toLocaleTimeString()}] [${level.toUpperCase()}] ${msg}`
         logs.push(line)
-        console.log(line)
+        console.log(`[${new Date(time).toLocaleTimeString()}] ${levelLabel} ${msg}`)
       } catch {
         const line = chunk.trim()
         logs.push(line)
@@ -53,7 +74,15 @@ export function createRunLogger(): RunLogger {
     },
   }
 
-  const logger = pino({ level: "debug" }, destination)
+  const logger = pino(
+    {
+      level: "debug",
+      formatters: {
+        level: (label) => ({ level: label }),
+      },
+    },
+    destination,
+  )
 
   return {
     logger,

@@ -1,4 +1,5 @@
 import type { Stagehand } from "@browserbasehq/stagehand"
+import { FatalError, RetryableError } from "workflow"
 import { z } from "zod"
 
 export const componentLinkSchema = z.object({
@@ -16,7 +17,7 @@ export async function discoverCrawl(
   const page = stagehand.context.activePage()
 
   if (!page) {
-    throw new Error("No active page available")
+    throw new FatalError("No active page available, stagehand may not be initialized")
   }
 
   info(`Navigating to ${indexUrl}...`)
@@ -24,6 +25,9 @@ export async function discoverCrawl(
   await page.waitForLoadState("domcontentloaded")
   info("Discovering component links...")
 
+  info(`indexUrl received: "${indexUrl}"`)
+  // indexUrl: "https://uselayouts.com/docs/components"
+  // origin:   "https://uselayouts.com"
   const { origin } = new URL(indexUrl)
 
   const links = await stagehand.extract(
@@ -31,16 +35,39 @@ export async function discoverCrawl(
 
     Return only links to individual component documentation pages. For each link return:
     - the display name exactly as shown in the nav
-    - the exact href value from the anchor tag (e.g. /docs/components/3d-book) — do not modify or shorten it
+    - the sliced href value of the component from the anchor tag e.g. /docs/components/3d-book. do not include the origin.
 
     Do not include Installation, Introduction, or any non-component pages.`,
     z.array(componentLinkSchema),
   )
+  // used to validate LLM links are siblings of indexUrl, not hallucinated paths
+  const { pathname: indexPathname } = new URL(indexUrl)
+  const basePath = indexPathname.endsWith("/") ? indexPathname : `${indexPathname.slice(0, indexPathname.lastIndexOf("/"))}/`
 
-  const resolved = links.map((link: ComponentLink) => ({
-    ...link,
-    url: link.url.startsWith("http") ? link.url : `${origin}${link.url}`,
-  }))
+  info(`Raw links from LLM: ${JSON.stringify(links)}`)
+
+  const resolved: ComponentLink[] = []
+  for (const link of links) {
+    // LLM may return: absolute URL, path with leading slash, or bare slug
+    // normalize all to absolute URL before parsing
+    let rawUrl = link.url
+    if (!rawUrl.startsWith("http")) {
+      rawUrl = rawUrl.startsWith("/") ? `${origin}${rawUrl}` : `${origin}/${rawUrl}`
+    }
+    let url: string
+    let pathname: string
+    try {
+      ({ pathname, href: url } = new URL(rawUrl))
+    } catch {
+      throw new RetryableError(`Link "${link.url}" could not be parsed as a valid URL`)
+    }
+    // startsWith alone would accept the index page itself, e.g. /docs/components/ === basePath
+    // length check ensures there's a slug after it, e.g. /docs/components/button ✓
+    if (!pathname.startsWith(basePath) || pathname.length <= basePath.length) {
+      throw new RetryableError(`Link "${url}" does not match expected pattern "${basePath}*"`)
+    }
+    resolved.push({ ...link, url: url })
+  }
 
   info(`Discovered ${resolved.length} components`)
 
